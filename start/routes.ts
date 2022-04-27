@@ -26,6 +26,8 @@ Route.get('/', async (request) => {
 
 Route.post('/login', "UsersController.login")
 Route.post('/logout', "UsersController.logout")
+Route.post('/entrar', "PartidasController.insertar")
+Route.post('/primero', "PartidasController.verificar1ero")
 
 //Route.group(() => {
   Route.resource("/users", "UsersController").apiOnly()

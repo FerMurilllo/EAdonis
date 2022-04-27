@@ -4,10 +4,11 @@ import { Schema, model} from 'mongoose';
 
 interface IntAuto {
   _id: string;
-  id: string;
+  // id: string;
   // id: number;
-  nombre: string;
-  user: Object; 
+  user: Object;
+  monitor: Number;
+  jugando: Boolean;
 }
 
 export default class AutoModel extends BaseModel{
@@ -29,13 +30,14 @@ export default class AutoModel extends BaseModel{
 
   static autoSchema = new Schema<IntAuto>({
     // id: { type: Number, required: false },
-    _id: { type: String, required: true },
+    // _id: { type: String, required: true },
     // id: { type: String, required: true },
-    nombre: { type: String, required: false },
     user: { type:Object , required: false },
-                   //listo
-    
+    monitor: { type:Number , required: false },
+    jugando: { type:Boolean, required: false },
+    //listo
+
   });
-  static AutoModel: any = model<IntAuto>('autos', this.autoSchema);
+  static AutoModel: any = model<IntAuto>('jugadores', this.autoSchema);
 
 }
