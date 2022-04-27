@@ -28,6 +28,9 @@ Route.post('/login', "UsersController.login")
 Route.post('/logout', "UsersController.logout")
 Route.post('/entrar', "PartidasController.insertar")
 Route.post('/primero', "PartidasController.verificar1ero")
+Route.post('/iniciar', "PartidasController.empezar")
+Route.post('/comprobar', "PartidasController.cambiarPantalla")
+Route.post('/get/estado', "PartidasController.getEstado")
 
 //Route.group(() => {
   Route.resource("/users", "UsersController").apiOnly()

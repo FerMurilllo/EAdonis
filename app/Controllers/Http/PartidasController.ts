@@ -37,7 +37,7 @@ export default class PartidasController {
     async verificar1ero({ request, response }) {
       try {
           await connect(url);
-          const com = await Barco.agreggate([{
+          const com = await Barco.aggregate([{
             $sort: {
                 monitor: 1
             }
@@ -48,13 +48,81 @@ export default class PartidasController {
             message: 'tu no eres el primero.',
             data: false
           }
-          if(com.monitor == request.input("monitor")){
+          // console.log(com[0].monitor)
+          if(com[0].monitor == request.input("monitor")){
             respuesta= {
               message: 'tu SI eres el primero.',
               data: true
             }
           }
           response.status(200).json(respuesta)
+        } catch (error) {
+          console.log(error)
+          response.status(400).json({
+            message : "Failing created a new model."
+          })
+        }
+    }
+
+    async empezar({ request, response }) {
+      try {
+        // await b1.save()
+          await connect(url);
+          // const  b1 = await Barco.updateOne({monitor:request.input("monitor_viejo")}, {jugando:true})
+          const  b1 = await Barco.updateOne({monitor:request.input("monitor")}, {jugando:true})
+          const com = await Barco.aggregate([{
+            $sort: {
+                monitor: 1
+            }
+          }])
+
+          // console.log(com[0].monitor)
+          // if(com[0].monitor == request.input("monitor")){
+           let respuesta=com
+          // }
+          response.status(200).json({
+            message: 'Juego iniciado.',
+            data: respuesta
+          })
+        } catch (error) {
+          console.log(error)
+          response.status(400).json({
+            message : "Failing created a new model."
+          })
+        }
+    }
+    async cambiarPantalla({ request, response }) {
+      try {
+        // await b1.save()
+          await connect(url);
+          // const  b1 = await Barco.updateOne({monitor:request.input("monitor_viejo")}, {jugando:true})
+          const  b1 = await Barco.updateOne({monitor:request.input("monitor_viejo")}, {jugando:false})
+          const  b2 = await Barco.updateOne({monitor:request.input("monitor_nuevo")}, {jugando:true})
+
+          response.status(200).json({
+            message: 'pantalla cambiada.',
+            // data: respuesta
+          })
+        } catch (error) {
+          console.log(error)
+          response.status(400).json({
+            message : "Failing created a new model."
+          })
+        }
+    }
+
+    async getEstado({ request, response }) {
+      try {
+        // await b1.save()
+          await connect(url);
+          // const  b1 = await Barco.updateOne({monitor:request.input("monitor_viejo")}, {jugando:true})
+          const  b1 = await Barco.find({monitor:request.input("monitor")})
+          // const  b2 = await Barco.updateOne({monitor:request.input("monitor_nuevo")}, {jugando:true})
+
+          response.status(200).json({
+            message: 'pantalla cambiada.',
+            data: b1
+          })
         } catch (error) {
           console.log(error)
           response.status(400).json({
