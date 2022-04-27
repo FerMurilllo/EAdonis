@@ -1,71 +1,50 @@
  import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
- import mongoose, {connect} from 'mongoose';
- import Partida from 'App/Models/Partida'
-import   BarcoModel from 'Database/migrations/barco';
-import { Request } from '@adonisjs/core/build/standalone';
+ import  {connect} from 'mongoose';
+ 
+ import PartidaModel from 'App/Models/Partida';
  'Database/migrations/barco';
 
  const url = 'mongodb://localhost:27017/barco';
- const Barco = BarcoModel.BarcoModel1; 
-
+ const Partida =PartidaModel.PartidaModel1;
 
 export default class PartidasController {
 
-    async insertar({ request, response }) {
+    public async store({ request, response }) {
         try {
             await connect(url);
-            const com = new Barco({
-              id : request.input('Barco'), 
-              idPartida : request.input('Partida'), 
-              Posicion : request.input('Posicion')
+            const com = new Partida({
+              _id : request.input('NoPartida'), 
+              nombre : request.input('Nombre'), 
             })
             await com.save()
             response.status(200).json({
-              message: 'Successfully created a new model.',
+              message: 'Successfully .',
               data: com
             })
           } catch (error) {
             response.status(400).json({
-              message : "Failing created a new model."
+              message : "Error."
             })
           }
       }
-      /*
-    public async update({request,params, response}: HttpContextContract) {
-      console.log("update"); 
-      try{
-        await connect(url);
-       console.log(params.id); 
 
-        const com = await Estrella.findByIdAndUpdate(params.id, 
-        {
-          Estrella : request.input("Estrella")
-        })
-        
-        response.status(200).json({
-          massage : "Satifactorio. Usuario encontrado y actualizado.",
-          data : com
-        })
-      }
-      catch(error){
-        response.status(400).json({
-          massage : "Error. Usuario no enocntrado.",
-        })
-      }
-    }
-   */
-      public async update({params, request, response }: HttpContextContract){
-          try{
-              await connect(url);       
-              const barco = await Barco.findByIdAndUpdate(params.id,
-                {
-                Posicion: request.input("Posicion")
-                })  
+      public async update({auth,request,params, response}: HttpContextContract) {
+        try{
+          await connect(url);
+          const user = await auth.use('api').authenticate()
+         console.log(params.id); 
 
-                response.status(200).json({
-                    massage : "Succesfully.",
-                    data : barco
-                  })
+          const parti = await Partida.findByIdAndUpdate(params.id, 
+          {
+            nombre : request.input("nombre"),
+            user: user.serializeAttributes(),
+            
+          })
+          
+          response.status(200).json({
+            massage : "Satifactorio.",
+            data : parti
+          })
         }
         catch(error){
           response.status(400).json({
@@ -73,46 +52,6 @@ export default class PartidasController {
           })
         }
       }
-      
-      public async show({params, response}: HttpContextContract) {
-        console.log("show"); 
-        try{
-          await connect(url);
-          console.log(params.id);
-          const numero = parseInt( params.id);  
-          const com = await Barco.aggregate([
-            {
-              '$match': {
-                'id': numero
-              }
-            }, {
-              '$group': {
-                '_id': '$idPartida', 
-                'Posicion': {
-                  
-                }
-              }
-            }, {
-              '$project': {
-                '_id': 0
-              }
-            }
-          ]);
-          console.log(params.id); 
-    
-          response.status(200).json({
-            massage : "Satifactorio. Usuario encontrado",
-            data : com
-          })
-        }
-        catch(error){
-          response.status(400).json({
-            massage : "Error. Usuario no enocntrado.",
-          })
-        }
-      }
-    
-   
-    
+
 
 }
