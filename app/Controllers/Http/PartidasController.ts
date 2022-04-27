@@ -9,6 +9,27 @@
 
 export default class PartidasController {
 
+    
+  public async index({ response }: HttpContextContract) {
+    console.log("index"); 
+
+      try{
+        await connect(url);
+        const com = await Partida.find({}); 
+  
+        response.status(200).json({
+          message: 'Successfully .',
+          data: com
+        })
+      }
+      catch(error){
+        response.status(404).json({
+          message : "Failing."
+        })
+      }
+      
+    }
+
     public async store({ request, response }) {
         try {
             await connect(url);

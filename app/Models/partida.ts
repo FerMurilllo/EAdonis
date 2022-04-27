@@ -5,6 +5,8 @@ interface Partida {
     _id: number;
     user : Object;
     nombre: string;
+    
+    //monitor : number;
   }
   
   export default class PartidaModel{
@@ -12,7 +14,7 @@ interface Partida {
   static schema = new Schema<Partida>({
     _id: { type: Number, required: true },
     user: { type: Object , required: false },
-    nombre: { type: String, required: true }
+    nombre: { type: String, required: true },
   });
 
   static PartidaModel1 = model<Partida>('Partida', this.schema);

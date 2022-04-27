@@ -29,8 +29,10 @@ Route.post('/logout', "UsersController.logout")
 
 //Route.group(() => {
   Route.resource("/users", "UsersController").apiOnly()
+  Route.resource("/partidas", "PartidasController")
   Route.get("get/users", "UsersController.usuario")
-  Route.resource("/partida", "PartidasController")
+  Route.post("/partida", "PartidasController.store")
+  Route.put("/partida", "PartidasController.update")
   Route.post("/barco", "BarcoController.store")
   Route.put("/barcoup", "BarcoController.update")
 
